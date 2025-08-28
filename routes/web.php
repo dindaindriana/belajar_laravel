@@ -20,8 +20,16 @@ Route::get('/about', function () {
 Route::get('/posts', function () {
     // $posts = Post::with(['author', 'category'])->latest()->get();
 
-    $posts = Post::latest()->get();
-    return view('posts', ['title' => 'Blog', 'posts' => $posts]);
+    // dump(request('search'));
+
+    // $posts = Post::latest(); /pindah ke model
+
+    // if(request('search')){
+    //     $posts->where('title', 'like', '%' . request('search') . '%')
+    // } /pindh ke model
+
+    // $posts = Post::latest()->get();
+    return view('posts', ['title' => 'Blog', 'posts' => Post::filter(request(['search', 'category', 'author']))->latest()->Paginate(6)->withQueryString()]);
 });
 
 Route::get ('/posts/{post:slug}', function(Post $post){
